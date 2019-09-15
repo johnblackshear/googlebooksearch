@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SearchArea from './SearchArea';
+import request from 'superagent';
 
 
 // constructor that inputs the value from the form
@@ -11,6 +12,17 @@ class Books extends Component {
             searchField: ''
         }
     }
+
+    searchBook = (e) => {
+        e.preventDefault(); 
+        request
+            .get("https://www.googleapis.com/books/v1/volumes")
+            .query({q: this.state.searchField})
+            .then((data)=>{
+                console.log(data);
+            })
+    }
+
     // method that  handles the state of whatever was typed into input 
     handleSearch = (e) =>{
         console.log(e.target.value);
@@ -20,7 +32,7 @@ class Books extends Component {
     render(){
         return(
             <div>
-                <SearchArea handleSearch = {this.handleSearch}/>
+                <SearchArea searchBook = {this.searchBook} handleSearch = {this.handleSearch}/>
             </div>
         );
 
